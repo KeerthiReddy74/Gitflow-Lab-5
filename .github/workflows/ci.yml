@@ -1,0 +1,33 @@
+
+name: Gitflow Lab CI
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - 'feature/**'
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check required files
+        run: |
+          test -f README.md
+          test -f login.txt
+          test -f welcome.txt
+
+      - name: Lint whitespace
+        run: git diff --check
+
+      - name: Verify welcome message
+        run: grep -q "Welcome to Gitflow and GitHub" welcome.txt
